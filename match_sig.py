@@ -57,7 +57,7 @@ for item in notMatch:
         "source": item,
         "likely": dists
     })
-    print("likelyMathc:" + json.dumps(dists))
+    # print("likelyMathc:" + json.dumps(dists))
 
 
 def print_match(m):
@@ -66,12 +66,18 @@ def print_match(m):
             print(item["source"]["RawName"] + " - " + item["source"]["NowName"] + " -> " + matchItem["NowName"])
 
 
+def print_likely_match(m):
+    for item in m:
+        for likely in item["likely"]:
+            print(item["source"]["RawName"] + " - " + item["source"]["NowName"] + " -> " +
+                  likely["match"]["NowName"] + ", dist:" + str(likely["dist"]))
+
+
 print("--------perfectMatch--------")
 print_match(perfectMatch)
 print("--------multipleMatch--------")
 print_match(multipleMatch)
 print("--------likelyMathc--------")
-print(json.dumps(likelyMathc))
 
 for item in notMatch:
     badCount += 1
