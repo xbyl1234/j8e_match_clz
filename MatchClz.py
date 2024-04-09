@@ -16,7 +16,7 @@ class MethodFeature:
     pass
 
 
-# 没有混淆的类
+# no obfuscation
 BaseTypes = [
     "[[[I",
     "[[B",
@@ -1123,12 +1123,12 @@ class MatchClz(IScript):
 
         print("ClzSign2HashIdx: " + str(ClzSign2HashIdx))
 
-        # 生产旧数据库的sig
+        # create old project sig
         f = open(r"D:\desktop\tmp\sig\sig1.json", "w")
         f.write(json.dumps(self.findAllChange(), cls=MyEncoder))
         f.close()
 
-        # 生产新数据库sig
+        # create new project sig
         # f = open(r"D:\desktop\tmp\sig\sig2.json", "w")
         # f.write(json.dumps(self.getAllClzFeature(), cls=MyEncoder))
         # f.close()
@@ -1143,7 +1143,7 @@ class MatchClz(IScript):
 
     def findAllChange(self):
         allModify = []
-        # 必须对比的类
+        # must sig
         needed = [
             "08T",
             "0gg",
