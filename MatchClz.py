@@ -16,6 +16,7 @@ class MethodFeature:
     pass
 
 
+# 没有混淆的类
 BaseTypes = [
     "[[[I",
     "[[B",
@@ -1121,15 +1122,16 @@ class MatchClz(IScript):
         self.mainProject = ctx.getMainProject()
 
         print("ClzSign2HashIdx: " + str(ClzSign2HashIdx))
-        # print("findAllChange: " + json.dumps(self.findAllChange(), cls=MyEncoder))
-        # f = open(r"D:\desktop\tmp\sig\sig2.json", "w")
-        # f.write(json.dumps(self.getAllClzFeature(), cls=MyEncoder))
-        # f.close()
 
+        # 生产旧数据库的sig
         f = open(r"D:\desktop\tmp\sig\sig1.json", "w")
         f.write(json.dumps(self.findAllChange(), cls=MyEncoder))
         f.close()
-        # print(test)
+
+        # 生产新数据库sig
+        # f = open(r"D:\desktop\tmp\sig\sig2.json", "w")
+        # f.write(json.dumps(self.getAllClzFeature(), cls=MyEncoder))
+        # f.close()
 
     def getAllClzFeature(self):
         allClz = []
@@ -1141,9 +1143,51 @@ class MatchClz(IScript):
 
     def findAllChange(self):
         allModify = []
+        # 必须对比的类
+        needed = [
+            "08T",
+            "0gg",
+            "0gi",
+            "0Sb",
+            "0aU",
+            "0Kp",
+            "0Xv",
+            "0NL",
+            "0CN",
+            "15N",
+            "0Ii",
+            "0K2",
+            "0Sp",
+            "0l1",
+            "0kz",
+            "0CF",
+            "0kx",
+            "0QN",
+            "0lG",
+            "0l0",
+            "11E",
+            "0yc",
+            "0zU",
+            "0lH",
+            "0Pw",
+            "0Ec",
+            "0OQ",
+            "0CH",
+            "0KW",
+            "0DS",
+            "0TP",
+            "0dg",
+            "0Q6",
+            "0di",
+            "0pF",
+            "0Sl",
+            "0eX",
+            "050",
+            "WindowManager",
+        ]
         for unit in self.mainProject.findUnits(IDexUnit):
             for c in unit.getClasses():
                 clzFeature = ClzFeature(c)
-                if clzFeature.hasModify():
+                if clzFeature.hasModify() or clzFeature.RawName in needed:
                     allModify.append(clzFeature)
         return allModify

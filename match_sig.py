@@ -31,6 +31,7 @@ for sig1Item in sig1:
         match.append(matchItem)
     else:
         notMatch.append(sig1Item)
+        badCount += 1
 
 perfectMatch = []
 multipleMatch = []
@@ -78,15 +79,19 @@ print_match(perfectMatch)
 print("--------multipleMatch--------")
 print_match(multipleMatch)
 print("--------likelyMathc--------")
+print_likely_match(likelyMathc)
 
-for item in notMatch:
-    badCount += 1
-    print("not match: " + item["NowName"])
+f = open("./perfectMatch.json", "w")
+f.write(json.dumps(perfectMatch))
+f.close()
 
-f = open("./result.json", "w")
-f.write(json.dumps(match))
-f.write("\n")
-f.write(json.dumps(notMatch))
+f = open("./multipleMatch.json", "w")
+f.write(json.dumps(multipleMatch))
+f.close()
+
+# dist越小类越相似
+f = open("./likelyMathc.json", "w")
+f.write(json.dumps(likelyMathc))
 f.close()
 
 print("badCount: " + str(badCount))
