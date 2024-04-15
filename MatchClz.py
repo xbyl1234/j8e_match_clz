@@ -1293,7 +1293,7 @@ class MethodFeature:
                 for inst in block.getInstructions():
                     self.CodeFeature.append(getInstructionsType(str(inst)))
 
-            crc1 = binascii.crc32(self.CodeFeature)
+            crc1 = binascii.crc32(str(self.CodeFeature).encode())
             self.Feature.append(crc1)
 
 
@@ -1382,9 +1382,9 @@ class MatchClz(IScript):
         # f.write(json.dumps(self.getAllClzFeature(), cls=MyEncoder))
         # f.close()
 
-       # f = open(r"D:\desktop\j8e_match_clz\sig\ins.json", "w")
-       #  f.write(str(instSet))
-       #  f.close()
+    # f = open(r"D:\desktop\j8e_match_clz\sig\ins.json", "w")
+    #  f.write(str(instSet))
+    #  f.close()
     def getAllClzFeature(self):
         allClz = []
         for unit in self.mainProject.findUnits(IDexUnit):
