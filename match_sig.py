@@ -12,8 +12,8 @@ def listSame(l1, l2):
     return True
 
 
-sig1 = json.loads(open(r"D:\desktop\tmp\sig\sig1.json", "r", encoding="utf8").read())
-sig2 = json.loads(open(r"D:\desktop\tmp\sig\sig2.json", "r", encoding="utf8").read())
+sig1 = json.loads(open(r"D:\desktop\j8e_match_clz\sig\sig1.json", "r", encoding="utf8").read())
+sig2 = json.loads(open(r"D:\desktop\j8e_match_clz\sig\sig2.json", "r", encoding="utf8").read())
 
 badCount = 0
 match = []
@@ -84,25 +84,29 @@ for item in notMatch:
     # print("likelyMathc:" + json.dumps(dists))
 
 
-def print_match(m):
+def print_match(f, m):
     for item in m:
         for matchItem in item["match"]:
-            print(item["source"]["RawName"] + " - " + item["source"]["NowName"] + " -> " + matchItem["NowName"])
+            f.write(item["source"]["RawName"] + " - " + item["source"]["NowName"] + " -> " +
+                    matchItem["NowName"])
+            f.write("\n")
 
 
-def print_likely_match(m):
+def print_likely_match(f, m):
     for item in m:
         for likely in item["likely"]:
-            print(item["source"]["RawName"] + " - " + item["source"]["NowName"] + " -> " +
-                  likely["match"]["NowName"] + ", dist:" + str(likely["dist"]))
+            f.write(item["source"]["RawName"] + " - " + item["source"]["NowName"] + " -> " +
+                    likely["match"]["NowName"] + ", dist:" + str(likely["dist"]))
+            f.write("\n")
 
 
-print("--------perfectMatch--------")
-print_match(perfectMatch)
-print("--------multipleMatch--------")
-print_likely_match(multipleMatch)
-print("--------likelyMathc--------")
-print_likely_match(likelyMathc)
+f = open("./result.txt", "w")
+f.write("--------perfectMatch--------\n")
+print_match(f, perfectMatch)
+f.write("--------multipleMatch--------\n")
+print_likely_match(f, multipleMatch)
+f.write("--------likelyMathc--------\n")
+print_likely_match(f, likelyMathc)
 
 f = open("./perfectMatch.json", "w")
 f.write(json.dumps(perfectMatch))
