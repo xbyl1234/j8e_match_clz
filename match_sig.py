@@ -66,6 +66,7 @@ for item in multipleMatch:
     dists = sorted(dists, key=lambda v: v["dist"])
     dists = dists[:5]
     item["likely"] = dists
+    print("multipleMatch:" + json.dumps(item))
 
 for item in notMatch:
     dists = []
@@ -77,11 +78,12 @@ for item in notMatch:
         })
     dists = sorted(dists, key=lambda v: v["dist"])
     dists = dists[:5]
-    likelyMathc.append({
+    likelyItem = {
         "source": item,
         "likely": dists
-    })
-    # print("likelyMathc:" + json.dumps(dists))
+    }
+    likelyMathc.append(likelyItem)
+    print("likelyMathc:" + json.dumps(likelyItem))
 
 
 def print_match(f, m):

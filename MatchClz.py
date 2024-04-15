@@ -1,5 +1,6 @@
 # ?description=MatchClz
 # ?shortcut=
+import binascii
 import json
 
 from json import JSONEncoder
@@ -1289,9 +1290,11 @@ class MethodFeature:
             cfg = methodData.getCodeItem().getControlFlowGraph()
             blockList = cfg.getBlocks()
             for block in blockList:
-                self.Feature.append(block.size())
                 for inst in block.getInstructions():
                     self.CodeFeature.append(getInstructionsType(str(inst)))
+
+            crc1 = binascii.crc32(self.CodeFeature)
+            self.Feature.append(crc1)
 
 
 class ClzFeature:
