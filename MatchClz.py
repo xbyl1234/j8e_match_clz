@@ -1215,10 +1215,9 @@ class FieldFeature:
     def __init__(self, field):
         self.RawName = field.getName(False)
         self.NowName = field.getName(True)
-        self.ClzSign = field.getFieldType().getSignature()
+        self.RawSign = field.getSignature(False)
         # test.add(self.ClzSign)
-
-        feature = [getClzSignHash(self.ClzSign)]
+        feature = [getClzSignHash(field.getFieldType().getSignature())]
         flag = 0
         if field.getData().isFinal():
             flag |= 0b1
@@ -1245,10 +1244,10 @@ class MethodFeature:
     def __init__(self, method):
         self.RawName = method.getName(False)
         self.NowName = method.getName(True)
-        self.Sign = method.getSignature(False, True, True, True)
+        self.RawSign = method.getSignature(False)
         self.Feature = []
         self.CodeFeature = []
-        self.makeFeature(method, self.Sign)
+        self.makeFeature(method, self.RawSign)
 
     def hasModify(self):
         return self.RawName != self.NowName
