@@ -12,9 +12,235 @@ class MyEncoder(JSONEncoder):
         return obj.__dict__
 
 
-class MethodFeature:
-    pass
-
+BaseInst = [
+    "add-double",
+    "add-double/2addr",
+    "add-float",
+    "add-float/2addr",
+    "add-int",
+    "add-int/2addr",
+    "add-int/lit16",
+    "add-int/lit8",
+    "add-long",
+    "add-long/2addr",
+    "aget",
+    "aget-boolean",
+    "aget-byte",
+    "aget-char",
+    "aget-object",
+    "aget-short",
+    "aget-wide",
+    "and-int",
+    "and-int/2addr",
+    "and-int/lit16",
+    "and-int/lit8",
+    "and-long",
+    "and-long/2addr",
+    "aput",
+    "aput-boolean",
+    "aput-byte",
+    "aput-char",
+    "aput-object",
+    "aput-short",
+    "aput-wide",
+    "array-length",
+    "check-cast",
+    "cmpg-double",
+    "cmpg-float",
+    "cmpl-double",
+    "cmpl-float",
+    "cmp-long",
+    "const",
+    "const/16",
+    "const/4",
+    "const/high16",
+    "const-class",
+    "const-string",
+    "const-wide",
+    "const-wide/16",
+    "const-wide/32",
+    "const-wide/high16",
+    "div-double",
+    "div-double/2addr",
+    "div-float",
+    "div-float/2addr",
+    "div-int",
+    "div-int/2addr",
+    "div-int/lit16",
+    "div-int/lit8",
+    "div-long",
+    "div-long/2addr",
+    "double-to-float",
+    "double-to-int",
+    "double-to-long",
+    "fill-array-data",
+    "filled-new-array",
+    "filled-new-array/range",
+    "float-to-double",
+    "float-to-int",
+    "float-to-long",
+    "goto",
+    "goto/16",
+    "if-eq",
+    "if-eqz",
+    "if-ge",
+    "if-gez",
+    "if-gt",
+    "if-gtz",
+    "if-le",
+    "if-lez",
+    "if-lt",
+    "if-ltz",
+    "if-ne",
+    "if-nez",
+    "iget",
+    "iget-boolean",
+    "iget-boolean-quick",
+    "iget-byte",
+    "iget-char",
+    "iget-char-quick",
+    "iget-object",
+    "iget-object-quick",
+    "iget-quick",
+    "iget-short",
+    "iget-wide",
+    "iget-wide-quick",
+    "instance-of",
+    "int-to-byte",
+    "int-to-char",
+    "int-to-double",
+    "int-to-float",
+    "int-to-long",
+    "int-to-short",
+    "invoke-direct",
+    "invoke-direct/range",
+    "invoke-interface",
+    "invoke-interface/range",
+    "invoke-static",
+    "invoke-static/range",
+    "invoke-super",
+    "invoke-super/range",
+    "invoke-virtual",
+    "invoke-virtual/range",
+    "invoke-virtual-quick",
+    "invoke-virtual-quick/range",
+    "iput",
+    "iput-boolean",
+    "iput-boolean-quick",
+    "iput-byte",
+    "iput-char",
+    "iput-char-quick",
+    "iput-object",
+    "iput-object-quick",
+    "iput-quick",
+    "iput-short",
+    "iput-wide",
+    "iput-wide-quick",
+    "long-to-double",
+    "long-to-float",
+    "long-to-int",
+    "monitor-enter",
+    "monitor-exit",
+    "move",
+    "move/from16",
+    "move-exception",
+    "move-object",
+    "move-object/from16",
+    "move-result",
+    "move-result-object",
+    "move-result-wide",
+    "move-wide",
+    "move-wide/from16",
+    "mul-double",
+    "mul-double/2addr",
+    "mul-float",
+    "mul-float/2addr",
+    "mul-int",
+    "mul-int/2addr",
+    "mul-int/lit16",
+    "mul-int/lit8",
+    "mul-long",
+    "mul-long/2addr",
+    "neg-double",
+    "neg-float",
+    "neg-int",
+    "neg-long",
+    "new-array",
+    "new-instance",
+    "nop",
+    "or-int",
+    "or-int/2addr",
+    "or-int/lit16",
+    "or-int/lit8",
+    "or-long",
+    "or-long/2addr",
+    "packed-switch",
+    "rem-double/2addr",
+    "rem-float/2addr",
+    "rem-int",
+    "rem-int/2addr",
+    "rem-int/lit16",
+    "rem-int/lit8",
+    "rem-long",
+    "rem-long/2addr",
+    "return",
+    "return-object",
+    "return-void",
+    "return-void-no-barrier",
+    "return-wide",
+    "rsub-int",
+    "rsub-int/lit8",
+    "sget",
+    "sget-boolean",
+    "sget-byte",
+    "sget-char",
+    "sget-object",
+    "sget-short",
+    "sget-wide",
+    "shl-int",
+    "shl-int/2addr",
+    "shl-int/lit8",
+    "shl-long",
+    "shl-long/2addr",
+    "shr-int",
+    "shr-int/2addr",
+    "shr-int/lit8",
+    "shr-long",
+    "shr-long/2addr",
+    "sparse-switch",
+    "sput",
+    "sput-boolean",
+    "sput-byte",
+    "sput-object",
+    "sput-short",
+    "sput-wide",
+    "sub-double",
+    "sub-double/2addr",
+    "sub-float",
+    "sub-float/2addr",
+    "sub-int",
+    "sub-int/2addr",
+    "sub-long",
+    "sub-long/2addr",
+    "throw",
+    "ushr-int",
+    "ushr-int/2addr",
+    "ushr-int/lit8",
+    "ushr-long",
+    "ushr-long/2addr",
+    "xor-int",
+    "xor-int/2addr",
+    "xor-int/lit16",
+    "xor-int/lit8",
+    "xor-long",
+    "xor-long/2addr"
+]
+tmp = {}
+idx = 0
+for item in BaseInst:
+    tmp[item] = idx
+    idx += 1
+BaseInst = tmp
 
 # no obfuscation
 BaseTypes = [
@@ -971,6 +1197,16 @@ def getClzSignHash(clzSign):
     return ClzSign2HashMap[clzSign]
 
 
+# instSet = set()
+
+
+def getInstructionsType(inst):
+    # instSet.add(inst)
+    if BaseInst.get(inst) is not None:
+        return BaseInst[inst]
+    return 0
+
+
 # test = set()
 
 
@@ -1009,7 +1245,9 @@ class MethodFeature:
         self.RawName = method.getName(False)
         self.NowName = method.getName(True)
         self.Sign = method.getSignature(False, True, True, True)
-        self.Feature = self.makeFeature(method, self.Sign)
+        self.Feature = []
+        self.CodeFeature = []
+        self.makeFeature(method, self.Sign)
 
     def hasModify(self):
         return self.RawName != self.NowName
@@ -1019,33 +1257,41 @@ class MethodFeature:
         sp = sign.split(")")
         retType = sp[1]
         paramsType = sp[0].split(";")
-        feature = []
+        methodData = method.getData()
         flag = 0
-        if method.getData().isFinal():
+        if methodData.isFinal():
             flag |= 0b1
-        if method.getData().isPrivate():
+        if methodData.isPrivate():
             flag |= 0b10
-        if method.getData().isProtected():
+        if methodData.isProtected():
             flag |= 0b100
-        if method.getData().isPublic():
+        if methodData.isPublic():
             flag |= 0b1000
-        if method.getData().isStatic():
+        if methodData.isStatic():
             flag |= 0b10000
-        if method.getData().isSynthetic():
+        if methodData.isSynthetic():
             flag |= 0b100000
-        if method.getData().isAbstract():
+        if methodData.isAbstract():
             flag |= 0b1000000
-        if method.getData().isConstructor():
+        if methodData.isConstructor():
             flag |= 0b10000000
-        if method.getData().isNative():
+        if methodData.isNative():
             flag |= 0b100000000
 
-        feature.append(flag)
-        feature.append(getClzSignHash(retType))
-        feature.append(-2)
+        self.Feature.append(flag)
+        self.Feature.append(getClzSignHash(retType))
+        self.Feature.append(-2)
         for item in paramsType:
-            feature.append(getClzSignHash(item + ";"))
-        return feature
+            self.Feature.append(getClzSignHash(item + ";"))
+        self.Feature.append(-6)
+
+        if methodData.getCodeItem() is not None:
+            cfg = methodData.getCodeItem().getControlFlowGraph()
+            blockList = cfg.getBlocks()
+            for block in blockList:
+                self.Feature.append(block.size())
+                for inst in block.getInstructions():
+                    self.CodeFeature.append(getInstructionsType(str(inst)))
 
 
 class ClzFeature:
@@ -1124,7 +1370,7 @@ class MatchClz(IScript):
         print("ClzSign2HashIdx: " + str(ClzSign2HashIdx))
 
         # create old project sig
-        f = open(r"D:\desktop\tmp\sig\sig1.json", "w")
+        f = open(r"D:\desktop\j8e_match_clz\sig\sig1.json", "w")
         f.write(json.dumps(self.findAllChange(), cls=MyEncoder))
         f.close()
 
@@ -1133,6 +1379,9 @@ class MatchClz(IScript):
         # f.write(json.dumps(self.getAllClzFeature(), cls=MyEncoder))
         # f.close()
 
+       # f = open(r"D:\desktop\j8e_match_clz\sig\ins.json", "w")
+       #  f.write(str(instSet))
+       #  f.close()
     def getAllClzFeature(self):
         allClz = []
         for unit in self.mainProject.findUnits(IDexUnit):

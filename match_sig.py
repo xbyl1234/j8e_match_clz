@@ -44,6 +44,29 @@ for item in match:
     else:
         perfectMatch.append(item)
 
+
+def getMethodCodeFeature(item):
+    feature = []
+    for method in item["Method"]:
+        feature.extend(method["CodeFeature"])
+        feature.append(-1)
+    return feature
+
+
+for item in multipleMatch:
+    dists = []
+    sourceFeature = getMethodCodeFeature(item["source"])
+    for matched in item["match"]:
+        matchFeature = getMethodCodeFeature(matched)
+        dist = damerau_levenshtein_distance(sourceFeature, matchFeature)
+        dists.append({
+            "dist": dist,
+            "match": matched
+        })
+    dists = sorted(dists, key=lambda v: v["dist"])
+    dists = dists[:5]
+    item["likely"] = dists
+
 for item in notMatch:
     dists = []
     for sig2Item in sig2:
@@ -77,7 +100,7 @@ def print_likely_match(m):
 print("--------perfectMatch--------")
 print_match(perfectMatch)
 print("--------multipleMatch--------")
-print_match(multipleMatch)
+print_likely_match(multipleMatch)
 print("--------likelyMathc--------")
 print_likely_match(likelyMathc)
 
