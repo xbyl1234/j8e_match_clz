@@ -13,20 +13,23 @@ class UpdateName(IScript):
         self.mainProject = None
 
     def renamePerfect(self, oldFeature, newFeature):
-        for idx in range(0, oldFeature["Field"]):
+        for idx in range(0, len(oldFeature["Field"])):
             oldField = oldFeature["Field"][idx]
             nowField = newFeature["Field"][idx]
             if oldField["NowName"] != oldField["RawName"]:
+                print("rename field: " + nowField["RawSign"] + " -> " + oldField["NowName"])
                 self.dexUnit.getField(nowField["RawSign"]).setName(oldField["NowName"])
 
-        for idx in range(0, oldFeature["Method"]):
+        for idx in range(0, len(oldFeature["Method"])):
             oldMethod = oldFeature["Method"][idx]
             nowMethod = newFeature["Method"][idx]
             if oldMethod["NowName"] != oldMethod["RawName"]:
+                print("rename method: " + nowMethod["RawSign"] + " -> " + oldMethod["NowName"])
                 self.dexUnit.getMethod(nowMethod["RawSign"]).setName(oldMethod["NowName"])
 
         dexClz = self.dexUnit.getClass(newFeature["RawSign"])
         if oldFeature["RawName"] != oldFeature["NowName"]:
+            print("rename class: " + newFeature["RawSign"] + " -> " + oldFeature["NowName"])
             dexClz.setName(oldFeature["NowName"])
 
     def renameLikely(self, oldFeature, newFeature):
