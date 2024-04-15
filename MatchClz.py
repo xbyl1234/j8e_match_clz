@@ -1301,6 +1301,7 @@ class ClzFeature:
     def __init__(self, clz):
         self.RawName = clz.getName(False)
         self.NowName = clz.getName(True)
+        self.RawSign = clz.getSignature(False)
         # if self.RawName != self.NowName:
         # print(self.RawName + " - " + self.NowName)
         self.Field = []
@@ -1378,7 +1379,7 @@ class MatchClz(IScript):
         f.close()
 
         # create new project sig
-        # f = open(r"D:\desktop\tmp\sig\sig2.json", "w")
+        # f = open(r"D:\desktop\j8e_match_clz\sig\sig2.json", "w")
         # f.write(json.dumps(self.getAllClzFeature(), cls=MyEncoder))
         # f.close()
 
