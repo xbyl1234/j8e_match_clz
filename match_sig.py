@@ -68,22 +68,22 @@ for item in multipleMatch:
     item["likely"] = dists
     print("multipleMatch:" + json.dumps(item))
 
-for item in notMatch:
-    dists = []
-    for sig2Item in sig2:
-        dist = damerau_levenshtein_distance(item["Feature"], sig2Item["Feature"])
-        dists.append({
-            "dist": dist,
-            "match": sig2Item
-        })
-    dists = sorted(dists, key=lambda v: v["dist"])
-    dists = dists[:5]
-    likelyItem = {
-        "source": item,
-        "likely": dists
-    }
-    likelyMathc.append(likelyItem)
-    print("likelyMathc:" + json.dumps(likelyItem))
+# for item in notMatch:
+#     dists = []
+#     for sig2Item in sig2:
+#         dist = damerau_levenshtein_distance(item["Feature"], sig2Item["Feature"])
+#         dists.append({
+#             "dist": dist,
+#             "match": sig2Item
+#         })
+#     dists = sorted(dists, key=lambda v: v["dist"])
+#     dists = dists[:5]
+#     likelyItem = {
+#         "source": item,
+#         "likely": dists
+#     }
+#     likelyMathc.append(likelyItem)
+#     print("likelyMathc:" + json.dumps(likelyItem))
 
 
 def print_match(f, m):

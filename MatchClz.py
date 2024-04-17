@@ -6,6 +6,7 @@ import json
 from json import JSONEncoder
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
+from com.pnfsoftware.jeb.core.actions import ActionXrefsData, Actions, ActionContext
 
 
 class MyEncoder(JSONEncoder):
@@ -1297,7 +1298,7 @@ class MethodFeature:
 
 
 class ClzFeature:
-    def __init__(self, clz):
+    def __init__(self, unit, clz):
         self.RawName = clz.getName(False)
         self.NowName = clz.getName(True)
         self.RawSign = clz.getSignature(False)
@@ -1307,9 +1308,9 @@ class ClzFeature:
         self.Method = []
         self.addFields(clz.getFields())
         self.addMethods(clz.getMethods())
-        self.Feature = self.makeFeature(clz)
+        self.Feature = self.makeFeature(unit, clz)
 
-    def makeFeature(self, clz):
+    def makeFeature(self, unit, clz):
         feature = []
         flag = 0
         if clz.isInterface():
@@ -1320,9 +1321,21 @@ class ClzFeature:
             flag |= 0b100
         if clz.isAnnotation():
             flag |= 0b1000
+        if clz.isMemberClass():
+            flag |= 0b10000
+        if clz.isEnumeration():
+            flag |= 0b100000
+        if clz.isStaticMemberClass():
+            flag |= 0b1000000
+
         feature.append(flag)
         feature.append(-5)
-
+        if clz.getSuperTypeIndex() != -1:
+            feature.append(1)
+        else:
+            feature.append(0)
+        feature.append(len(clz.getInterfaceTypeIndexes()))
+        feature.append(-8)
         for item in self.Field:
             feature.extend(item.Feature)
             feature.append(-3)
@@ -1330,6 +1343,11 @@ class ClzFeature:
         for item in self.Method:
             feature.extend(item.Feature)
             feature.append(-4)
+
+        actionXrefsData = ActionXrefsData()
+        actionContext = ActionContext(unit, Actions.QUERY_XREFS, clz.getItemId(), None)
+        if unit.prepareExecution(actionContext, actionXrefsData):
+            feature.append(len(actionXrefsData.getAddresses()))
         return feature
 
     def addField(self, field):
@@ -1374,12 +1392,12 @@ class MatchClz(IScript):
 
         # create old project sig
         f = open(r"D:\desktop\j8e_match_clz\sig\sig1.json", "w")
-        f.write(json.dumps(self.findAllChange(), cls=MyEncoder))
+        f.write(json.dumps(self.findAllChange(), cls=MyEncoder, indent=4))
         f.close()
 
         # create new project sig
         # f = open(r"D:\desktop\j8e_match_clz\sig\sig2.json", "w")
-        # f.write(json.dumps(self.getAllClzFeature(), cls=MyEncoder))
+        # f.write(json.dumps(self.getAllClzFeature(), cls=MyEncoder,indent=4))
         # f.close()
 
     # f = open(r"D:\desktop\j8e_match_clz\sig\ins.json", "w")
@@ -1389,7 +1407,7 @@ class MatchClz(IScript):
         allClz = []
         for unit in self.mainProject.findUnits(IDexUnit):
             for c in unit.getClasses():
-                clzFeature = ClzFeature(c)
+                clzFeature = ClzFeature(unit, c)
                 allClz.append(clzFeature)
         return allClz
 
@@ -1439,7 +1457,7 @@ class MatchClz(IScript):
         ]
         for unit in self.mainProject.findUnits(IDexUnit):
             for c in unit.getClasses():
-                clzFeature = ClzFeature(c)
+                clzFeature = ClzFeature(unit, c)
                 if clzFeature.hasModify() or clzFeature.RawName in needed:
                     allModify.append(clzFeature)
         return allModify
