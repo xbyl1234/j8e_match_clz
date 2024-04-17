@@ -1213,7 +1213,7 @@ def getInstructionsType(inst):
 
 
 class FieldFeature:
-    def __init__(self, field):
+    def __init__(self, unit, field):
         self.RawName = field.getName(False)
         self.NowName = field.getName(True)
         self.RawSign = field.getSignature(False)
@@ -1237,23 +1237,28 @@ class FieldFeature:
         feature.append(flag)
         self.Feature = feature
 
+        # actionXrefsData = ActionXrefsData()
+        # actionContext = ActionContext(unit, Actions.QUERY_XREFS, field.getItemId(), None)
+        # if unit.prepareExecution(actionContext, actionXrefsData):
+        #     self.Feature.append(len(actionXrefsData.getAddresses()))
+
     def hasModify(self):
         return self.RawName != self.NowName
 
 
 class MethodFeature:
-    def __init__(self, method):
+    def __init__(self, unit, method):
         self.RawName = method.getName(False)
         self.NowName = method.getName(True)
         self.RawSign = method.getSignature(False)
         self.Feature = []
         self.CodeFeature = []
-        self.makeFeature(method, self.RawSign)
+        self.makeFeature(unit, method, self.RawSign)
 
     def hasModify(self):
         return self.RawName != self.NowName
 
-    def makeFeature(self, method, sign):
+    def makeFeature(self, unit, method, sign):
         sign = sign[sign.index("(") + 1:]
         sp = sign.split(")")
         retType = sp[1]
@@ -1286,6 +1291,12 @@ class MethodFeature:
             self.Feature.append(getClzSignHash(item + ";"))
         self.Feature.append(-6)
 
+        # actionXrefsData = ActionXrefsData()
+        # actionContext = ActionContext(unit, Actions.QUERY_XREFS, method.getItemId(), None)
+        # if unit.prepareExecution(actionContext, actionXrefsData):
+        #     self.Feature.append(len(actionXrefsData.getAddresses()))
+        # self.Feature.append(-6)
+
         if methodData.getCodeItem() is not None:
             cfg = methodData.getCodeItem().getControlFlowGraph()
             blockList = cfg.getBlocks()
@@ -1306,8 +1317,8 @@ class ClzFeature:
         # print(self.RawName + " - " + self.NowName)
         self.Field = []
         self.Method = []
-        self.addFields(clz.getFields())
-        self.addMethods(clz.getMethods())
+        self.addFields(unit, clz.getFields())
+        self.addMethods(unit, clz.getMethods())
         self.Feature = self.makeFeature(unit, clz)
 
     def makeFeature(self, unit, clz):
@@ -1344,25 +1355,25 @@ class ClzFeature:
             feature.extend(item.Feature)
             feature.append(-4)
 
-        actionXrefsData = ActionXrefsData()
-        actionContext = ActionContext(unit, Actions.QUERY_XREFS, clz.getItemId(), None)
-        if unit.prepareExecution(actionContext, actionXrefsData):
-            feature.append(len(actionXrefsData.getAddresses()))
+        # actionXrefsData = ActionXrefsData()
+        # actionContext = ActionContext(unit, Actions.QUERY_XREFS, clz.getItemId(), None)
+        # if unit.prepareExecution(actionContext, actionXrefsData):
+        #     feature.append(len(actionXrefsData.getAddresses()))
         return feature
 
-    def addField(self, field):
-        self.Field.append(FieldFeature(field))
+    def addField(self, unit, field):
+        self.Field.append(FieldFeature(unit, field))
 
-    def addFields(self, fields):
+    def addFields(self, unit, fields):
         for item in fields:
-            self.addField(item)
+            self.addField(unit, item)
 
-    def addMethod(self, method):
-        self.Method.append(MethodFeature(method))
+    def addMethod(self, unit, method):
+        self.Method.append(MethodFeature(unit, method))
 
-    def addMethods(self, methods):
+    def addMethods(self, unit, methods):
         for item in methods:
-            self.addMethod(item)
+            self.addMethod(unit, item)
 
     def hasModify(self):
         if self.RawName != self.NowName:
